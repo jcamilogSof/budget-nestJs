@@ -1,8 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+
 import { SavingsService } from './savings.service';
 import { CreateSavingDto } from './dto/create-saving.dto';
 import { UpdateSavingDto } from './dto/update-saving.dto';
 
+@ApiTags('savings')
 @Controller('savings')
 export class SavingsController {
   constructor(private readonly savingsService: SavingsService) {}
