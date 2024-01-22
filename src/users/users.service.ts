@@ -1,26 +1,62 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
+
+  constructor(
+    @InjectModel(User.name) private readonly userModel: Model<User>,
+  ) {}
+
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    const addData = { 
+      createdAt: new Date(),
+      ...createUserDto
+    }
+    try {
+      const createdUser = new this.userModel(addData);
+      return createdUser.save();
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all users mockData`;
+  async findAll() {
+    try {
+      return await this.userModel.find().exec();
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id) {
+    try {
+      const user = await this.userModel.findById(id).exec();
+      return user;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      const updateuser = await this.userModel.findByIdAndUpdate(id, { $set: updateUserDto }, { new: true }).exec();
+      return updateuser;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    try {
+      return await this.userModel.findByIdAndDelete(id).exec();
+    } catch (error) {
+      throw error;
+    }
   }
 }

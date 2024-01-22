@@ -12,6 +12,8 @@ export class BillsService {
     return `This action returns all bills`;
   }
 
+  findAllByUser(userId: string) { }
+
   findOne(id: number) {
     return `This action returns a #${id} bill`;
   }

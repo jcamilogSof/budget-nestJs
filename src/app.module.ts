@@ -9,6 +9,7 @@ import { BillsModule } from './bills/bills.module';
 import { SavingsModule } from './savings/savings.module';
 import { DatabaseModule } from './database/database.module';
 import { environment } from './environment';
+import { ApiResponseService } from './utils/api-response/api-response.service';
 import config from './config';
 
 @Module({
@@ -25,6 +26,6 @@ import config from './config';
     DatabaseModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ApiResponseService],
 })
 export class AppModule {}

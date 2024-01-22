@@ -4,34 +4,64 @@ import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
+import { ApiResponseService } from '../utils/api-response/api-response.service';
+import { MongoIdPipe } from '../utils/pipes/mongo-id/mongo-id.pipe';
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly apiResponseService: ApiResponseService,
+    private readonly usersService: UsersService
+  ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  create(
+    @Body() createUserDto: CreateUserDto
+  ) {
+    try {
+      return this.apiResponseService.success(this.usersService.create(createUserDto));
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  async findAll() {
+    try {
+      const res = await this.usersService.findAll();
+      return  this.apiResponseService.success(res, 'Users found successfully');
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  async findOne(@Param('id', MongoIdPipe) id: string) {
+    try {
+      const res = await this.usersService.findOne(id);
+      return this.apiResponseService.success(res, 'User found successfully');
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  async update(@Param('id', MongoIdPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
+    try {
+      const res = await this.usersService.update(id, updateUserDto);
+      return this.apiResponseService.success(res, 'User updated successfully');
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  async remove(@Param('id', MongoIdPipe) id: string) {
+    try {
+      const res = await this.usersService.remove(id);
+      return this.apiResponseService.success(res, 'User deleted successfully');
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
   }
 }
