@@ -15,11 +15,12 @@ export class UsersController {
   ) {}
 
   @Post()
-  create(
+  async create(
     @Body() createUserDto: CreateUserDto
   ) {
     try {
-      return this.apiResponseService.success(this.usersService.create(createUserDto));
+      const res = await this.usersService.create(createUserDto);
+      return this.apiResponseService.success(res);
     } catch (error) {
       return this.apiResponseService.error(error);
     }

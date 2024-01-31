@@ -1,12 +1,23 @@
-import { IsString, IsNumber, IsOptional } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsNotEmpty, IsDate } from 'class-validator';
 export class CreateBillDto {
-    @IsString()
-    readonly name: string;
-    
+
+    @IsNotEmpty()
     @IsNumber()
-    readonly amount: number;
+    readonly spent: number;
     
     @IsOptional()
     @IsString()
     readonly category: string;
+
+    @IsNotEmpty()
+    @IsString()
+    readonly idUser: string;
+
+    @IsNotEmpty()
+    @IsDate()
+    readonly date: string;
+
+    @IsNotEmpty()
+    @IsString()
+    readonly typeCurrency: string;
 }

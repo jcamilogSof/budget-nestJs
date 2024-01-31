@@ -5,33 +5,74 @@ import { BillsService } from './bills.service';
 import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
 
+import { ApiResponseService } from '../utils/api-response/api-response.service';
+
 @ApiTags('bills')
 @Controller('bills')
 export class BillsController {
-  constructor(private readonly billsService: BillsService) {}
+  constructor(
+    private readonly billsService: BillsService,
+    private readonly apiResponseService: ApiResponseService
+    ) {}
 
   @Post()
   create(@Body() createBillDto: CreateBillDto) {
-    return this.billsService.create(createBillDto);
+    try {
+      const res = this.billsService.create(createBillDto);
+      return this.apiResponseService.success(res);
+      
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
   }
 
   @Get()
-  findAll() {
-    return this.billsService.findAll();
+  async findAll() {
+    try {
+      const res = await this.billsService.findAll();
+      return this.apiResponseService.success(res);
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
+  }
+
+  @Get(':idUser')
+  async findAllByUser(@Param('idUser') idUser: string) {
+    try {
+      const res = await this.billsService.findAllByUser(idUser);
+      return this.apiResponseService.success(res);
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    } 
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.billsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      const res = await this.billsService.findOne(id);
+      return this.apiResponseService.success(res);
+    } catch (error) {
+      this.apiResponseService.error(error);
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBillDto: UpdateBillDto) {
-    return this.billsService.update(+id, updateBillDto);
+  async update(@Param('id') id: string, @Body() updateBillDto: UpdateBillDto) {
+    try {
+      const res = await this.billsService.update(id, updateBillDto);
+      return res;
+    } catch (error) {
+      return this.apiResponseService.error(error);
+     }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.billsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {
+      const res = await this.billsService.remove(id);
+      return this.apiResponseService.success(res);
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
   }
 }

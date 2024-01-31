@@ -13,7 +13,11 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
+    const existUser = await this.findOne({ email: createUserDto.email });
+    if (existUser) {
+      throw new Error('User already exists');
+    }
     const addData = { 
       createdAt: new Date(),
       ...createUserDto
