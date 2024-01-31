@@ -10,8 +10,8 @@ export class Bill extends Document {
     @Prop({ required: false })
     category: string;
 
-    @Prop({ required: true })
-    idUser: string;
+    @Prop({ type: Types.ObjectId, required: true })
+    idUser: string | Types.ObjectId;
 
     @Prop({ required: true })
     date: string;

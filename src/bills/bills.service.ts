@@ -40,15 +40,6 @@ export class BillsService {
     }
    }
 
-  async findOne(id: string) {
-    try {
-      const res = await this.billModel.findById(id).exec();
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async update(id: string, updateBillDto: UpdateBillDto) {
     try {
       const res = await this.billModel.findByIdAndUpdate(id, {$set: updateBillDto}, {new: true}).exec();

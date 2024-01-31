@@ -1,26 +1,57 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { UpdateIncomeDto } from './dto/update-income.dto';
+import { Income } from './entities/income.entity';
 
 @Injectable()
 export class IncomeService {
+  constructor(
+    @InjectModel(Income.name) private incomeModel: Model<Income>
+  ) {}
   create(createIncomeDto: CreateIncomeDto) {
-    return 'This action adds a new income';
+    try {
+      const create = new this.incomeModel(createIncomeDto);
+      return create.save();
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all income`;
+  async findAll() {
+    try {
+      const res = await this.incomeModel.find().exec();
+      return res;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async findAllByUser(idUser: string) { 
+    try {
+      const res = await this.incomeModel.find({idUser}).exec();
+      return res;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} income`;
+  update(id: string, updateIncomeDto: UpdateIncomeDto) {
+    try {
+      const res = this.incomeModel.findByIdAndUpdate(id, {$set: updateIncomeDto}, {new: true}).exec();
+      return res;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(id: number, updateIncomeDto: UpdateIncomeDto) {
-    return `This action updates a #${id} income`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} income`;
+  remove(id: string) {
+    try {
+      const res = this.incomeModel.findByIdAndDelete(id).exec();
+      return res;
+    } catch (error) {
+      throw error;
+    }
   }
 }

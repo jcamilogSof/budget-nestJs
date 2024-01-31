@@ -4,6 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { IncomeService } from './income.service';
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { UpdateIncomeDto } from './dto/update-income.dto';
+import { MongoIdPipe } from '../utils/pipes/mongo-id/mongo-id.pipe';
 
 @ApiTags('income')
 @Controller('income')
@@ -21,17 +22,18 @@ export class IncomeController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.incomeService.findOne(+id);
+  findAllByUser(@Param('id', MongoIdPipe) id: string) {
+    return this.incomeService.findAllByUser(id);
   }
 
+
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateIncomeDto: UpdateIncomeDto) {
-    return this.incomeService.update(+id, updateIncomeDto);
+  update(@Param('id', MongoIdPipe) id: string, @Body() updateIncomeDto: UpdateIncomeDto) {
+    return this.incomeService.update(id, updateIncomeDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.incomeService.remove(+id);
+  remove(@Param('id', MongoIdPipe) id: string) {
+    return this.incomeService.remove(id);
   }
 }

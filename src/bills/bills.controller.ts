@@ -4,7 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { BillsService } from './bills.service';
 import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
-
+import { MongoIdPipe } from '../utils/pipes/mongo-id/mongo-id.pipe';
 import { ApiResponseService } from '../utils/api-response/api-response.service';
 
 @ApiTags('bills')
@@ -36,28 +36,18 @@ export class BillsController {
     }
   }
 
-  @Get(':idUser')
-  async findAllByUser(@Param('idUser') idUser: string) {
+  @Get(':id')
+  async findAllByUser(@Param('id', MongoIdPipe) id: string) {
     try {
-      const res = await this.billsService.findAllByUser(idUser);
+      const res = await this.billsService.findAllByUser(id);
       return this.apiResponseService.success(res);
     } catch (error) {
       return this.apiResponseService.error(error);
     } 
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    try {
-      const res = await this.billsService.findOne(id);
-      return this.apiResponseService.success(res);
-    } catch (error) {
-      this.apiResponseService.error(error);
-    }
-  }
-
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateBillDto: UpdateBillDto) {
+  async update(@Param('id', MongoIdPipe) id: string, @Body() updateBillDto: UpdateBillDto) {
     try {
       const res = await this.billsService.update(id, updateBillDto);
       return res;
@@ -67,7 +57,7 @@ export class BillsController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', MongoIdPipe) id: string) {
     try {
       const res = await this.billsService.remove(id);
       return this.apiResponseService.success(res);
