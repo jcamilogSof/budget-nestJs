@@ -28,9 +28,22 @@ export class IncomeService {
       throw error;
     }
   }
+
   async findAllByUser(idUser: string) { 
     try {
       const res = await this.incomeModel.find({idUser}).exec();
+      return res;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  async totalIncome(idUser: string) { 
+    try {
+      const res = await this.incomeModel.aggregate([
+        {$match: {idUser: idUser}},
+        {$group: {_id: null, total: {$sum: "$amount"}}}
+      ]).exec();
       return res;
     } catch (error) {
       throw error;

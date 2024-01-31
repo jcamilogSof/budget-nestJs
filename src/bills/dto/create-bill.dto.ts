@@ -3,7 +3,7 @@ export class CreateBillDto {
 
     @IsNotEmpty()
     @IsNumber()
-    readonly spent: number;
+    readonly amount: number;
     
     @IsOptional()
     @IsString()

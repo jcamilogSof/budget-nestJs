@@ -7,7 +7,7 @@ export class CreateIncomeDto {
 
     @IsNumber()
     @IsNotEmpty()
-    spent: number;
+    amount: number;
 
     @IsString()
     @IsNotEmpty()

@@ -5,15 +5,24 @@ import { IncomeService } from './income.service';
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { UpdateIncomeDto } from './dto/update-income.dto';
 import { MongoIdPipe } from '../utils/pipes/mongo-id/mongo-id.pipe';
+import { ApiResponseService } from '../utils/api-response/api-response.service';
 
 @ApiTags('income')
 @Controller('income')
 export class IncomeController {
-  constructor(private readonly incomeService: IncomeService) {}
+  constructor(
+    private readonly incomeService: IncomeService,
+    private readonly apiResponseService: ApiResponseService
+    ) {}
 
   @Post()
   create(@Body() createIncomeDto: CreateIncomeDto) {
-    return this.incomeService.create(createIncomeDto);
+    try {
+      const res = this.apiResponseService.success(this.incomeService.create(createIncomeDto));
+      return res
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
   }
 
   @Get()
@@ -21,19 +30,45 @@ export class IncomeController {
     return this.incomeService.findAll();
   }
 
+  @Get('total/:id')
+  totalIncome(@Param('id', MongoIdPipe) id: string) {
+    try {
+      const res = this.apiResponseService.success(this.incomeService.totalIncome(id));
+      return res;
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
+  }
+
   @Get(':id')
   findAllByUser(@Param('id', MongoIdPipe) id: string) {
-    return this.incomeService.findAllByUser(id);
+    try {
+      const res = this.apiResponseService.success(this.incomeService.findAllByUser(id));
+      return res;
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
   }
 
 
   @Patch(':id')
   update(@Param('id', MongoIdPipe) id: string, @Body() updateIncomeDto: UpdateIncomeDto) {
-    return this.incomeService.update(id, updateIncomeDto);
+    try {
+      const res = this.apiResponseService.success(this.incomeService.update(id, updateIncomeDto));
+      return res;
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
   }
 
   @Delete(':id')
   remove(@Param('id', MongoIdPipe) id: string) {
-    return this.incomeService.remove(id);
+    try {
+      const res = this.apiResponseService.success(this.incomeService.remove(id));
+      return res;
+    } catch (error) {
+      return this.apiResponseService.error(error);
+    }
+    
   }
 }

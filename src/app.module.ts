@@ -10,6 +10,7 @@ import { SavingsModule } from './savings/savings.module';
 import { DatabaseModule } from './database/database.module';
 import { environment } from './environment';
 import { ApiResponseService } from './utils/api-response/api-response.service';
+import { CategoriesModule } from './categories/categories.module';
 import config from './config';
 
 @Module({
@@ -23,7 +24,7 @@ import config from './config';
     IncomeModule, 
     BillsModule, 
     SavingsModule, 
-    DatabaseModule
+    DatabaseModule, CategoriesModule
   ],
   controllers: [AppController],
   providers: [AppService, ApiResponseService],

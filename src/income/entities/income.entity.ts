@@ -7,12 +7,12 @@ export class Income extends Document{
     concept: string;
 
     @Prop({ required: true })
-    spent: number;
+    amount: number;
 
     @Prop({ required: true })
     date: Date;
 
-    @Prop({type: Types.ObjectId, required: true })
+    @Prop({ type: Types.ObjectId, required: true })
     idUser: string | Types.ObjectId;
 }
 

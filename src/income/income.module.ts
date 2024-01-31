@@ -4,6 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { IncomeService } from './income.service';
 import { IncomeController } from './income.controller';
 import { Income, IncomeSchema } from './entities/income.entity';
+import { ApiResponseService } from '../utils/api-response/api-response.service';
+
 
 @Module({
   imports: [
@@ -12,6 +14,6 @@ import { Income, IncomeSchema } from './entities/income.entity';
     ])
   ],
   controllers: [IncomeController],
-  providers: [IncomeService],
+  providers: [IncomeService, ApiResponseService],
 })
 export class IncomeModule {}
