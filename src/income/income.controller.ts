@@ -16,10 +16,10 @@ export class IncomeController {
     ) {}
 
   @Post()
-  create(@Body() createIncomeDto: CreateIncomeDto) {
+  async create(@Body() createIncomeDto: CreateIncomeDto) {
     try {
-      const res = this.apiResponseService.success(this.incomeService.create(createIncomeDto));
-      return res
+      const res = await this.incomeService.create(createIncomeDto);
+      return this.apiResponseService.success(res)
     } catch (error) {
       return this.apiResponseService.error(error);
     }
@@ -31,10 +31,10 @@ export class IncomeController {
   }
 
   @Get('total/:id')
-  totalIncome(@Param('id', MongoIdPipe) id: string) {
+  async totalIncome(@Param('id', MongoIdPipe) id: string) {
     try {
-      const res = this.apiResponseService.success(this.incomeService.totalIncome(id));
-      return res;
+      const res = await this.incomeService.totalIncome(id);
+      return this.apiResponseService.success(res);
     } catch (error) {
       return this.apiResponseService.error(error);
     }

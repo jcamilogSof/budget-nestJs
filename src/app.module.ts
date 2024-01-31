@@ -11,6 +11,7 @@ import { DatabaseModule } from './database/database.module';
 import { environment } from './environment';
 import { ApiResponseService } from './utils/api-response/api-response.service';
 import { CategoriesModule } from './categories/categories.module';
+import { TotalincomeandbillsModule } from './totalincomeandbills/totalincomeandbills.module';
 import config from './config';
 
 @Module({
@@ -24,7 +25,7 @@ import config from './config';
     IncomeModule, 
     BillsModule, 
     SavingsModule, 
-    DatabaseModule, CategoriesModule
+    DatabaseModule, CategoriesModule, TotalincomeandbillsModule
   ],
   controllers: [AppController],
   providers: [AppService, ApiResponseService],
