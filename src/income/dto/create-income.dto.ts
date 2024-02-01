@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
+import { IsNotEmpty, IsNumber, IsString, IsPositive, Validate } from 'class-validator';
+import { AmountValidator } from '../../utils/validators/amout.validator';
 export class CreateIncomeDto {
 
     @IsString()
@@ -7,6 +8,8 @@ export class CreateIncomeDto {
 
     @IsNumber()
     @IsNotEmpty()
+    @IsPositive()
+    @Validate(AmountValidator)
     amount: number;
 
     @IsString()

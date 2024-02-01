@@ -17,14 +17,13 @@ export class BillsService {
 
   async create(createBillDto: CreateBillDto) {
     try {
-      const addDate = {
-        date: new Date(),
-        ...createBillDto
-      }
-      const createdBill =  new this.billModel(addDate);
-      const resBill = await createdBill.save();
       const currentBalance = await this.totalincomeandbillsService.findByUser(createBillDto.idUser);
-      const newBalance = currentBalance[0].total + createBillDto.amount;
+      if(currentBalance[0].total <= 0) {
+        throw new Error('No tiene saldo suficiente para realizar esta operación');
+      }
+      const createdBill =  new this.billModel(createBillDto);
+      const resBill = await createdBill.save();
+      const newBalance = currentBalance[0].total - createBillDto.amount;
       await this.totalincomeandbillsService.update(createBillDto.idUser, {total: newBalance});
       return resBill;
     } catch (error) {
