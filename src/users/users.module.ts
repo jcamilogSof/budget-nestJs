@@ -19,5 +19,6 @@ import { TotalincomeandbillsModule } from '../totalincomeandbills/totalincomeand
   ],
   controllers: [UsersController],
   providers: [UsersService, ApiResponseService],
+  exports: [UsersService],
 })
 export class UsersModule {}
