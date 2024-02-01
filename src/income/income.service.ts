@@ -6,15 +6,22 @@ import { CreateIncomeDto } from './dto/create-income.dto';
 import { UpdateIncomeDto } from './dto/update-income.dto';
 import { Income } from './entities/income.entity';
 
+import { TotalincomeandbillsService } from '../totalincomeandbills/totalincomeandbills.service';
+
 @Injectable()
 export class IncomeService {
   constructor(
-    @InjectModel(Income.name) private incomeModel: Model<Income>
+    @InjectModel(Income.name) private incomeModel: Model<Income>,
+    private readonly totalincomeandbillsService: TotalincomeandbillsService,
   ) {}
-  create(createIncomeDto: CreateIncomeDto) {
+  async create(createIncomeDto: CreateIncomeDto) {
     try {
       const create = new this.incomeModel(createIncomeDto);
-      return create.save();
+      const resCreate = await create.save();
+      const currentBalance = await this.totalincomeandbillsService.findByUser(createIncomeDto.idUser);
+      const newBalance = currentBalance[0].total + createIncomeDto.amount;
+      await this.totalincomeandbillsService.update(createIncomeDto.idUser, {total: newBalance});
+      return resCreate;
     } catch (error) {
       throw error;
     }
@@ -32,18 +39,6 @@ export class IncomeService {
   async findAllByUser(idUser: string) { 
     try {
       const res = await this.incomeModel.find({idUser}).exec();
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  }
-  
-  async totalIncome(idUser: string) { 
-    try {
-      const res = await this.incomeModel.aggregate([
-        {$match: {idUser: idUser}},
-        {$group: {_id: null, total: {$sum: "$amount"}}}
-      ]).exec();
       return res;
     } catch (error) {
       throw error;

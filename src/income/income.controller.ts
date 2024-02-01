@@ -30,16 +30,6 @@ export class IncomeController {
     return this.incomeService.findAll();
   }
 
-  @Get('total/:id')
-  async totalIncome(@Param('id', MongoIdPipe) id: string) {
-    try {
-      const res = await this.incomeService.totalIncome(id);
-      return this.apiResponseService.success(res);
-    } catch (error) {
-      return this.apiResponseService.error(error);
-    }
-  }
-
   @Get(':id')
   findAllByUser(@Param('id', MongoIdPipe) id: string) {
     try {
