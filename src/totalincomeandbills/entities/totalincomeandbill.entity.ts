@@ -1,6 +1,13 @@
 import { Schema, SchemaFactory, Prop } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
-export class Totalincomeandbill extends Document {}
+@Schema()
+export class Totalincomeandbill extends Document {
+    @Prop({ required: true })
+    total: number;
+
+    @Prop({ required: true })
+    idUser: string;
+}
 
 export const TotalincomeandbillSchema = SchemaFactory.createForClass(Totalincomeandbill);

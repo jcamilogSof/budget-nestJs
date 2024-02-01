@@ -5,16 +5,20 @@ import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { TotalincomeandbillsService } from '../totalincomeandbills/totalincomeandbills.service';
 
 @Injectable()
 export class UsersService {
 
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
+    private readonly totalincomeandbillsService: TotalincomeandbillsService
   ) {}
 
   async create(createUserDto: CreateUserDto) {
     const existUser = await this.findOne({ email: createUserDto.email });
+    console.log(existUser);
+    
     if (existUser) {
       throw new Error('User already exists');
     }
@@ -24,7 +28,9 @@ export class UsersService {
     }
     try {
       const createdUser = new this.userModel(addData);
-      return createdUser.save();
+      const response = await createdUser.save();
+      await this.totalincomeandbillsService.create({ idUser: response._id, total: 0 });
+      return response;
     } catch (error) {
       throw error;
     }
@@ -38,9 +44,9 @@ export class UsersService {
     }
   }
 
-  async findOne(id) {
+  async findOne(email) {
     try {
-      const user = await this.userModel.findById(id).exec();
+      const user = await this.userModel.findOne(email).exec();
       return user;
     } catch (error) {
       throw error;

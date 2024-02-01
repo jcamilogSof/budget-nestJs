@@ -9,7 +9,7 @@ import config from 'src/config';
         MongooseModule.forRootAsync({
             useFactory: ( configService: ConfigType<typeof config> ) => {
                 const  { user, password, dbName } = configService.mongo;
-                return { uri: `mongodb+srv://${user}:${password}@${dbName}.z463emr.mongodb.net/?retryWrites=true&w=majority` }
+                return { uri: `mongodb+srv://${user}:${password}@${dbName}.z463emr.mongodb.net/${dbName}?retryWrites=true&w=majority` }
             },
             inject: [config.KEY]
         })

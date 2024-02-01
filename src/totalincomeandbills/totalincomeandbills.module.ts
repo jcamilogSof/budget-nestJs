@@ -16,5 +16,6 @@ import { Totalincomeandbill, TotalincomeandbillSchema } from './entities/totalin
   ],
   controllers: [TotalincomeandbillsController],
   providers: [TotalincomeandbillsService],
+  exports: [TotalincomeandbillsService]
 })
 export class TotalincomeandbillsModule {}

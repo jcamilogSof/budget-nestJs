@@ -5,6 +5,7 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { User, UserSchema } from './entities/user.entity';
 import { ApiResponseService } from '../utils/api-response/api-response.service';
+import { TotalincomeandbillsModule } from '../totalincomeandbills/totalincomeandbills.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ApiResponseService } from '../utils/api-response/api-response.service';
         schema: UserSchema,
       },
     ]),
+    TotalincomeandbillsModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, ApiResponseService],

@@ -19,7 +19,7 @@ export class User extends Document {
     identification: number;
 
     @Prop({ required: true })
-    number: string;
+    number: number;
 
     @Prop({ required: true })
     typeDocument: string;
