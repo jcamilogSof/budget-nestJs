@@ -5,6 +5,7 @@ import { BillsService } from './bills.service';
 import { BillsController } from './bills.controller';
 import { Bill, BillSchema } from './entities/bill.entity';
 import { ApiResponseService } from '../utils/api-response/api-response.service';
+import { TotalincomeandbillsModule } from '../totalincomeandbills/totalincomeandbills.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ApiResponseService } from '../utils/api-response/api-response.service';
         schema: BillSchema,
       },
     ]),
+    TotalincomeandbillsModule,
   ],
   controllers: [BillsController],
   providers: [BillsService, ApiResponseService],

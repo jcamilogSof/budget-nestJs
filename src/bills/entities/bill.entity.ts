@@ -14,7 +14,7 @@ export class Bill extends Document {
     idUser: string | Types.ObjectId;
 
     @Prop({ required: true })
-    date: string;
+    date: Date;
 
     @Prop({ required: true })
     typeCurrency: string;

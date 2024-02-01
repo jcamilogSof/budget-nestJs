@@ -30,9 +30,14 @@ export class TotalincomeandbillsService {
     }
   }
 
-  update(id: number, updateTotalincomeandbillDto: UpdateTotalincomeandbillDto) {
+  async update(id: string, updateTotalincomeandbillDto: UpdateTotalincomeandbillDto) {
     try {
-      return this.totalincomeandbillModel.findByIdAndUpdate(id, {$set: updateTotalincomeandbillDto}, {new: true}).exec();
+      const res = await this.totalincomeandbillModel.findOneAndUpdate(
+        {idUser:id}, 
+        {$set: updateTotalincomeandbillDto}, 
+        {new: true}
+      ).exec();
+      return res;
     } catch (error) { 
       return error;
     }

@@ -16,11 +16,10 @@ export class BillsController {
     ) {}
 
   @Post()
-  create(@Body() createBillDto: CreateBillDto) {
+  async create(@Body() createBillDto: CreateBillDto) {
     try {
-      const res = this.billsService.create(createBillDto);
+      const res = await this.billsService.create(createBillDto);
       return this.apiResponseService.success(res);
-      
     } catch (error) {
       return this.apiResponseService.error(error);
     }

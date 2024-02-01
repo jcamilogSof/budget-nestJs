@@ -14,10 +14,6 @@ export class CreateBillDto {
     readonly idUser: string;
 
     @IsNotEmpty()
-    @IsDate()
-    readonly date: string;
-
-    @IsNotEmpty()
     @IsString()
     readonly typeCurrency: string;
 }

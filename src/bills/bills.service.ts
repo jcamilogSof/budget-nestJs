@@ -5,18 +5,28 @@ import { Model } from 'mongoose';
 import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
 import { Bill } from './entities/bill.entity';
+import { TotalincomeandbillsService } from '../totalincomeandbills/totalincomeandbills.service';
 
 @Injectable()
 export class BillsService {
 
   constructor(
-    @InjectModel(Bill.name) private billModel: Model<Bill>
+    @InjectModel(Bill.name) private billModel: Model<Bill>,
+    private readonly totalincomeandbillsService: TotalincomeandbillsService,
   ) { }
 
   async create(createBillDto: CreateBillDto) {
     try {
-      const createdBill =  new this.billModel(createBillDto);
-      return createdBill.save();
+      const addDate = {
+        date: new Date(),
+        ...createBillDto
+      }
+      const createdBill =  new this.billModel(addDate);
+      const resBill = await createdBill.save();
+      const currentBalance = await this.totalincomeandbillsService.findByUser(createBillDto.idUser);
+      const newBalance = currentBalance[0].total + createBillDto.amount;
+      await this.totalincomeandbillsService.update(createBillDto.idUser, {total: newBalance});
+      return resBill;
     } catch (error) {
       throw error;
     }
